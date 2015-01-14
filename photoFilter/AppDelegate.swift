@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  photoFilter
+//  Photo Viewer
 //
-//  Created by David Rogers on 1/13/15.
+//  Created by David Rogers on 1/12/15.
 //  Copyright (c) 2015 David Rogers. All rights reserved.
 //
 
@@ -16,6 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
+  
+  //first we set the window frame to match the screensize with the bounds property
+    self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+  
+    self.window?.makeKeyAndVisible()
+    let rootVC = ViewController()
+    
+    //setup nav controller
+    let navController = UINavigationController(rootViewController: rootVC)
+    self.window?.rootViewController = navController
+    
     return true
   }
 
