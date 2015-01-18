@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 David Rogers. All rights reserved.
 //
 
+
 import UIKit
 
 protocol ImageSelectedProtocol {
@@ -17,17 +18,20 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   var collectionView : UICollectionView!
   var images = [UIImage]()
   var delegate : ImageSelectedProtocol?
+  var collectionVFlowLayout : UICollectionViewFlowLayout!
+  
+  
   
 //MARK: loadView
   override func loadView() {
     let rootView = UIView(frame: UIScreen.mainScreen().bounds)
-    let collectionViewFlowLayout = UICollectionViewFlowLayout()
+    self.collectionVFlowLayout = UICollectionViewFlowLayout()
     
-    self.collectionView = UICollectionView(frame: rootView.frame, collectionViewLayout: collectionViewFlowLayout)
+    self.collectionView = UICollectionView(frame: rootView.frame, collectionViewLayout: collectionVFlowLayout)
     rootView.addSubview(self.collectionView)
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
-    collectionViewFlowLayout.itemSize = CGSize(width: 200, height: 200)
+    collectionVFlowLayout.itemSize = CGSize(width: 200, height: 200)
     
     self.view = rootView
     
@@ -38,29 +42,63 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         super.viewDidLoad()
       self.view.backgroundColor = UIColor.blackColor()
       self.collectionView.registerClass(GalleryCell.self, forCellWithReuseIdentifier: "GALLERY_CELL")
-      let image0 = UIImage(named: "photo10.jpeg")
-      let image1 = UIImage(named: "photo11.jpeg")
-      let image2 = UIImage(named: "photo12.jpeg")
-      let image3 = UIImage(named: "photo13.jpeg")
-      let image4 = UIImage(named: "photo14.jpeg")
-      let image5 = UIImage(named: "photo15.jpeg")
-      let image6 = UIImage(named: "photo16.jpeg")
-      let image7 = UIImage(named: "photo17.jpg")
-      let image8 = UIImage(named: "photo18.jpeg")
-      let image9 = UIImage(named: "photo19.jpeg")
+      
+      
+      let image0 = UIImage(named: "leopard.jpg")
+      let image1 = UIImage(named: "dragonfly.jpg")
+      let image2 = UIImage(named: "butterfly.jpg")
+      let image3 = UIImage(named: "IsoFionabel.jpg")
+      let image4 = UIImage(named: "FionaKite.jpg")
+      let image5 = UIImage(named: "ripples.jpg")
+      
+   
       self.images.append(image0!)
       self.images.append(image1!)
+      self.images.append(image2!)
       self.images.append(image3!)
       self.images.append(image4!)
       self.images.append(image5!)
-      self.images.append(image6!)
-      self.images.append(image7!)
-      self.images.append(image8!)
-      self.images.append(image9!)
       
+      
+      
+      //don't forget colon on selector below for checking, steps 1&2 of GR workflow
+      let pinchGR = UIPinchGestureRecognizer(target: self, action: "collectionVPinched:")
+      self.collectionView.addGestureRecognizer(pinchGR)
         // Do any additional setup after loading the view.
     }
+//MARK: Gesture Recognizer Actions
+  
+  func collectionVPinched(sender : UIPinchGestureRecognizer) {
+    
+    switch sender.state {
+    
+    case .Began:
+      println("began")
+    case .Changed:
+      println("changed with velocity \(sender.velocity)")
+      self.collectionView.performBatchUpdates({ () -> Void in
+        if sender.velocity > 0 {
+          let newSize = CGSize(width: self.collectionVFlowLayout.itemSize.width * 1.03, height: self.collectionVFlowLayout.itemSize.height * 1.03)
+          self.collectionVFlowLayout.itemSize = newSize
+          
+        } else if sender.velocity < 0 {
+          let newSize = CGSize(width: self.collectionVFlowLayout.itemSize.width * 0.97, height: self.collectionVFlowLayout.itemSize.height * 0.97)
+          self.collectionVFlowLayout.itemSize = newSize
+          
+        }
+        
+        }, completion: {(finished) -> Void in
+          
+      })
+      
 
+    case .Ended:
+      println("ended")
+          default:
+      println("default")
+    }
+    println("Gallery CV Pinched")
+  }
   
   
 //MARK: UICollectionViewDataSource
@@ -79,7 +117,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   //MARK: UICollectionViewDelegate
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    print("gal img selected")
+    println("gallery")
     self.delegate?.controllerDidSelectImage(self.images[indexPath.row])
     
     self.navigationController?.popViewControllerAnimated(true)

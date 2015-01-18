@@ -31,5 +31,9 @@ class Thumbnail {
     let extent = result.extent()
     let imageReference = self.gpuContext.createCGImage(result, fromRect: extent)
     self.filteredImage = UIImage(CGImage: imageReference)
+    
+    
   }
+  
+  
 }
