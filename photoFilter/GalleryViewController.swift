@@ -10,7 +10,7 @@
 import UIKit
 
 protocol ImageSelectedProtocol {
-  func controllerDidSelectImage(UIImage) -> Void
+  func controllerDidSelectImage(_: UIImage) -> Void
 }
 
 class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -62,7 +62,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
       
       
       //don't forget colon on selector below for checking, steps 1&2 of GR workflow
-      let pinchGR = UIPinchGestureRecognizer(target: self, action: "collectionVPinched:")
+		let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(collectionVPinched))
       self.collectionView.addGestureRecognizer(pinchGR)
         // Do any additional setup after loading the view.
     }
@@ -73,9 +73,9 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     switch sender.state {
     
     case .Began:
-      println("began")
+      print("began")
     case .Changed:
-      println("changed with velocity \(sender.velocity)")
+      print("changed with velocity \(sender.velocity)")
       self.collectionView.performBatchUpdates({ () -> Void in
         if sender.velocity > 0 {
           let newSize = CGSize(width: self.collectionVFlowLayout.itemSize.width * 1.03, height: self.collectionVFlowLayout.itemSize.height * 1.03)
@@ -93,11 +93,11 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
       
 
     case .Ended:
-      println("ended")
+      print("ended")
           default:
-      println("default")
+      print("default")
     }
-    println("Gallery CV Pinched")
+    print("Gallery CV Pinched")
   }
   
   
@@ -108,7 +108,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GALLERY_CELL", forIndexPath: indexPath) as GalleryCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GALLERY_CELL", forIndexPath: indexPath) as! GalleryCell
     let image = self.images[indexPath.row]
     cell.imageView.image = image
     return cell
@@ -117,7 +117,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   //MARK: UICollectionViewDelegate
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    println("gallery")
+    print("gallery")
     self.delegate?.controllerDidSelectImage(self.images[indexPath.row])
     
     self.navigationController?.popViewControllerAnimated(true)
