@@ -21,14 +21,14 @@ class Thumbnail {
     self.imageQ = operationQueue
     self.gpuContext = context
   }
-  
+	
   func generateFilteredImage() {
-    let startImage = CIImage(image: self.origImage)
+    let startImage = CIImage(image: self.origImage!)
     let filter = CIFilter(name: self.filterName)
-    filter.setDefaults()
-    filter.setValue(startImage, forKey: kCIInputImageKey)
-    let result = filter.valueForKey(kCIOutputImageKey) as CIImage
-    let extent = result.extent()
+    filter!.setDefaults()
+    filter!.setValue(startImage, forKey: kCIInputImageKey)
+    let result = filter!.valueForKey(kCIOutputImageKey) as! CIImage
+    let extent = result.extent
     let imageReference = self.gpuContext.createCGImage(result, fromRect: extent)
     self.filteredImage = UIImage(CGImage: imageReference)
     

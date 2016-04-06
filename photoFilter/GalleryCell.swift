@@ -18,18 +18,18 @@ class GalleryCell: UICollectionViewCell {
     self.backgroundColor = UIColor.blackColor()
     imageView.frame = self.bounds
     imageView.contentMode = UIViewContentMode.ScaleAspectFill
-    imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.layer.masksToBounds = true
     let views = ["imageView" : imageView]
-    let imageViewConstraintsHoriz = NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: nil, metrics: nil, views: views)
+    let imageViewConstraintsHoriz = NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: [], metrics: nil, views: views)
     self.addConstraints(imageViewConstraintsHoriz)
     
-    let imageViewConstraintsVert = NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: nil, metrics: nil, views: views)
+    let imageViewConstraintsVert = NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: [], metrics: nil, views: views)
     self.addConstraints(imageViewConstraintsVert)
   
   }
   //required in Swift
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
     

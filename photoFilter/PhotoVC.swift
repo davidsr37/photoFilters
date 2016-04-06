@@ -27,12 +27,12 @@ class PhotoVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     
     self.collectView = UICollectionView(frame: rootView.bounds, collectionViewLayout: UICollectionViewFlowLayout())
     
-    let flowLayout = collectView.collectionViewLayout as UICollectionViewFlowLayout
+    let flowLayout = collectView.collectionViewLayout as! UICollectionViewFlowLayout
     flowLayout.itemSize = CGSize(width: 100, height: 100)
     
     rootView.addSubview(collectView)
     
-    collectView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    collectView.translatesAutoresizingMaskIntoConstraints = false
     
     self.view = rootView
     
@@ -56,8 +56,8 @@ class PhotoVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectView.dequeueReusableCellWithReuseIdentifier("PHOTO_CELL", forIndexPath: indexPath) as GalleryCell
-    let asset = self.fetchResults[indexPath.row] as PHAsset
+    let cell = collectView.dequeueReusableCellWithReuseIdentifier("PHOTO_CELL", forIndexPath: indexPath) as! GalleryCell
+    let asset = self.fetchResults[indexPath.row] as! PHAsset
     self.imageManager.requestImageForAsset(asset, targetSize: CGSize(width: 100, height: 100), contentMode: PHImageContentMode.AspectFill, options: nil) { (requestedImage, info) -> Void in
       cell.imageView.image = requestedImage
     }
@@ -66,13 +66,13 @@ class PhotoVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     
-    let selectedAsset = self.fetchResults[indexPath.row] as PHAsset
+    let selectedAsset = self.fetchResults[indexPath.row] as! PHAsset
     self.imageManager.requestImageForAsset(selectedAsset, targetSize: self.destinationImageSize, contentMode: PHImageContentMode.AspectFill, options: nil) {(requestedImage, info) -> Void in
       
-      println()
+      print()
       
   
-      self.delegate?.controllerDidSelectImage(requestedImage)
+      self.delegate?.controllerDidSelectImage(requestedImage!)
       
       self.navigationController?.popToRootViewControllerAnimated(true)
     }
